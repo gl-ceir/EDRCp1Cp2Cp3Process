@@ -10,35 +10,50 @@ import static com.gl.FileScpProcess.P5Process.NwlCustomFlagProcess.runQuery;
 public class CustomImeiPairProcess {
 
     static Logger log = LogManager.getLogger(CustomImeiPairProcess.class);
-
     public static void p5(Connection conn) {
+        updateNwl(conn);
         var getString = "gdce_data";
         startService(conn, getString);
     }
 
-    public static void startService(Connection conn, String value) {
+    public static void updateNwl(Connection conn) {
+        var q = "update app.national_whitelist set gdce_imei_status =1, gdce_modified_time =CURRENT_TIMESTAMP  where gdce_imei_status in (0,3)   and imei in( select imei from app.gdce_data where created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' )  )  ";
+        runQuery(conn, q);
+    }
 
-        var getString = " select a.imei  from "+ value +" a, imei_pair_detail b where a.imei=b.imei ";
+    public static void startService(Connection conn, String value) {
+        // gdce_data
+        var getString = " select a.imei  from " + value + " a, imei_pair_detail b " +
+                " where a.imei=b.imei and a.created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' ) ";
+
+        insertInImeiPairHis(conn, getString);
+
         insertInExceptionListHis(conn, getString);
         deleteFromEXceptionList(conn, getString);
 
         insertInBlackListHis(conn, getString);
         deleteFromBlackList(conn, getString);
+        removeAutoFromBlackList(conn, getString);
 
-        insertInImeiPairHis(conn, getString);
         deleteFromImeiPair(conn, " select imei from "+ value + " ");
+        updateGdceDateTime(conn);
+    }
+
+    private static void updateGdceDateTime(Connection conn) {
+        String a = "update sys_param set value =CURRENT_TIMESTAMP where tag ='gdce_register_imei_update_last_run_time' ";
+        runQuery(conn, a);
     }
 
 
     private static void insertInExceptionListHis(Connection conn, String str) {
-        String q = "insert into exception_list_his (actual_imei, imei,imsi , msisdn ,operator_id , operator_name, complaint_type, expiry_date , mode_type , request_type , txn_id , user_id , user_type ,tac ,remarks,source ,action ,action_remark )" +
-                " select actual_imei, imei,imsi , msisdn ,operator_id , operator_name, complaint_type, expiry_date , mode_type , request_type , txn_id , user_id , user_type ,tac ,remarks,source ,'DELETE','GDCE_TAX_PAID' from exception_list " +
+        String q = "insert into exception_list_his (actual_imei, imei,imsi , msisdn ,operator_id , operator_name, complaint_type, expiry_date , mode_type , request_type , txn_id , user_id , user_type ,tac ,remarks,source ,action ,action_remark ,operation )" +
+                " select actual_imei, imei,imsi , msisdn ,operator_id , operator_name, complaint_type, expiry_date , mode_type , request_type , txn_id , user_id , user_type ,tac ,remarks,'GDCE_TAX_PAID' ,'DELETE','GDCE_TAX_PAID' , 0 from exception_list " +
                 " where imei in( " + str + " )";
         runQuery(conn, q);
     }
 
     private static void deleteFromEXceptionList(Connection conn, String str) {
-        String q = "delete from   exception_list  where imei in (" + str + ")  ";
+        String q = "delete from exception_list  where imei in (" + str + ")  ";
         runQuery(conn, q);
     }
 
@@ -53,6 +68,12 @@ public class CustomImeiPairProcess {
         String q = "delete from  imei_pair_detail  where imei in (" + str + ")  ";
         runQuery(conn, q);
     }
+
+    private static void removeAutoFromBlackList(Connection conn, String str) {
+        String q = "UPDATE black_list SET source = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', source, ','), ',AUTO,', ','))WHERE source LIKE '%AUTO%'  and  imei in(" + str + ")  ";
+        runQuery(conn, q);
+    }
+
 
     private static void insertInBlackListHis(Connection conn, String str) {
         String q = "insert into black_list_his (actual_imei, imei,imsi , msisdn ,operator_id , operator_name, complaint_type, expiry_date , mode_type , request_type , txn_id , user_id , user_type ,tac ,remarks,source ,action ,action_remark ) " +

@@ -11,7 +11,7 @@ public class P5Init {
 
     public static void start(Connection c, String process) {
         switch (process) {
-            case "CustomImeiPair":
+            case "RegisterIMEIUpdate":
                 CustomImeiPairProcess.p5(c);
                 break;
             case "LMImeiPair":
