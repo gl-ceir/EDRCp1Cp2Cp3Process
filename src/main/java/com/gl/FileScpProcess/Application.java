@@ -5,6 +5,12 @@
  */
 package com.gl.FileScpProcess;
 
+import com.gl.FileScpProcess.CP.CP1FileTransfer;
+import com.gl.FileScpProcess.CP.CP2FileTransfer;
+import com.gl.FileScpProcess.CP.CP3FileTransfer;
+import com.gl.FileScpProcess.Config.MySQLConnection;
+import com.gl.FileScpProcess.P5Process.P5Init;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -15,12 +21,12 @@ public class Application {
 
     public static void main(String[] args) {
         System.out.println("start main method");
-        Connection conn = new com.gl.FileScpProcess.MySQLConnection().getConnection();
+        Connection conn = new MySQLConnection().getConnection();
         String process_parameter = args[0];
         String operator_parameter = args[1];
         String source_parameter = args[2];
         System.out.println("-----" + process_parameter + "  *************** " + operator_parameter + " #####" + source_parameter);
-        if (process_parameter != null && operator_parameter != null && source_parameter != null) {
+        if (process_parameter != null && operator_parameter != null) {
             processMethod(process_parameter, operator_parameter, source_parameter, conn);
         } else {
             System.out.println("Error: pass correct argument to run application.");
@@ -38,13 +44,16 @@ public class Application {
 
         switch (process_parameter) {
             case "CP1":
-                new com.gl.FileScpProcess.CP1FileTransfer().cp1(operator_parameter, source_parameter, conn);
+                new CP1FileTransfer().cp1(operator_parameter, source_parameter, conn);
                 break;
             case "CP2":
-                new com.gl.FileScpProcess.CP2FileTransfer().cp2(operator_parameter, source_parameter, conn);
+                new CP2FileTransfer().cp2(operator_parameter, source_parameter, conn);
                 break;
             case "CP3":
-                new com.gl.FileScpProcess.CP3FileTransfer().cp3(operator_parameter, source_parameter, conn);
+                new CP3FileTransfer().cp3(operator_parameter, source_parameter, conn);
+                break;
+            case "P5":
+                P5Init.start(conn,operator_parameter );
                 break;
             default: System.out.println("Method doesn't exist");
                 break;
