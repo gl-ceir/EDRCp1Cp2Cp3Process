@@ -42,7 +42,7 @@ public class CustomImeiPairProcess {
     }
 
     private static void insertNwlFromGdceOnPairRecordTime(Connection conn, String getString) {
-        String a = "insert into national_whitelist(action,actual_imei,actual_operator,created_filename,created_on_date,failed_rule_date, " +
+        String a = "insert into  app.national_whitelist(action,actual_imei,actual_operator,created_filename,created_on_date,failed_rule_date, " +
                 "failed_rule_id,failed_rule_name,feature_name,foreign_rule, imei,imei_arrival_time,imsi,is_used_device_imei,mobile_operator, " +
                 "msisdn,period, raw_cdr_file_name,record_time,record_type,server_origin,source,system_type,tac,tax_paid, is_test_imei, " +
                 "updated_filename,update_imei_arrival_time,update_raw_cdr_file_name,update_source ,gdce_imei_status,gdce_modified_time) " +
