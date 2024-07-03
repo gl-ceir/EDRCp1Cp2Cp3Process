@@ -1,9 +1,6 @@
 package com.gl.FileScpProcess.P5Process;
 
 import com.gl.FileScpProcess.AlertAudit.AlertService;
-import com.gl.FileScpProcess.AlertAudit.ModuleAuditTrail;
-import com.gl.FileScpProcess.CP.CP1FileTransfer;
-import com.gl.FileScpProcess.Config.PropertyReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,10 +17,10 @@ public class NwlCustomFlagProcess {
         runQuery(conn, q);
     }
 
-    public static  void runQuery(Connection conn, String query) {
+    public static void runQuery(Connection conn, String query) {
         log.info("Query : {} ", query);
         try (Statement stmt = conn.createStatement()) {
-            log.info(stmt.executeUpdate(query));
+            log.info("Rows Affected :  {}",stmt.executeUpdate(query)); ;
         } catch (Exception e) {
            var lastMethodName= Thread.currentThread().getStackTrace()[2].getMethodName();
             log.error(lastMethodName +" : Unable to run query: " + e.getLocalizedMessage() + " [Query] :" + query);

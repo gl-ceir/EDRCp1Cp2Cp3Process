@@ -9,11 +9,11 @@ import static com.gl.FileScpProcess.P5Process.NwlCustomFlagProcess.runQuery;
 
 public class CustomImeiPairProcess {
 
-    static Logger log = LogManager.getLogger(CustomImeiPairProcess.class);
+    static Logger logger = LogManager.getLogger(CustomImeiPairProcess.class);
     public static void p5(Connection conn) {
         updateNwl(conn);
-        var getString = "gdce_data";
-        startService(conn, getString);
+        var table = "gdce_data";
+        startService(conn, table);
     }
 
     public static void updateNwl(Connection conn) {
@@ -21,10 +21,12 @@ public class CustomImeiPairProcess {
         runQuery(conn, q);
     }
 
-    public static void startService(Connection conn, String value) {
+    public static void startService(Connection conn, String table) {
         // gdce_data
-        var getString = " select a.imei  from " + value + " a, imei_pair_detail b " +
+        var getString = " select a.imei  from " + table + " a, imei_pair_detail b " +
                 " where a.imei=b.imei and a.created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' ) ";
+
+        insertNwlFromGdceOnPairRecordTime(conn, getString);
 
         insertInImeiPairHis(conn, getString);
 
@@ -34,9 +36,21 @@ public class CustomImeiPairProcess {
         insertInBlackListHis(conn, getString);
         deleteFromBlackList(conn, getString);
         removeAutoFromBlackList(conn, getString);
-
-        deleteFromImeiPair(conn, " select imei from "+ value + " ");
+        deleteFromImeiPair(conn, " select imei from " + table + " ");
         updateGdceDateTime(conn);
+
+    }
+
+    private static void insertNwlFromGdceOnPairRecordTime(Connection conn, String getString) {
+        String a = "insert into national_whitelist(action,actual_imei,actual_operator,created_filename,created_on_date,failed_rule_date, " +
+                "failed_rule_id,failed_rule_name,feature_name,foreign_rule, imei,imei_arrival_time,imsi,is_used_device_imei,mobile_operator, " +
+                "msisdn,period, raw_cdr_file_name,record_time,record_type,server_origin,source,system_type,tac,tax_paid, is_test_imei, " +
+                "updated_filename,update_imei_arrival_time,update_raw_cdr_file_name,update_source ,gdce_imei_status,gdce_modified_time) " +
+                "select action,actual_imei,actual_operator,create_filename,created_on,failed_rule_date, " +
+                "failed_rule_id,failed_rule_name,feature_name,foregin_rule, imei,imei_arrival_time,imsi, is_used,mobile_operator, " +
+                "msisdn,period,raw_cdr_file_name,record_time,record_type,server_origin,source,system_type,tac,tax_paid,test_imei, " +
+                "update_filename,update_imei_arrival_time,update_raw_cdr_file_name,update_source , 1, CURRENT_TIMESTAMP from active_unique_imei  where imei in(select distinct imei from imei_pair_detail where imei in (SELECT  gdce_data.imei FROM gdce_data  LEFT JOIN national_whitelist on gdce_data.imei = national_whitelist.imei WHERE  national_whitelist.imei IS NULL and  imei_pair_detail.record_time is not null and gdce_data.created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' )  ))   ";
+        runQuery(conn, a);
     }
 
     private static void updateGdceDateTime(Connection conn) {
