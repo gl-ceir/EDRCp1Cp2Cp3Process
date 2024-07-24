@@ -5,19 +5,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 
-import static com.gl.FileScpProcess.P5Process.NwlCustomFlagProcess.runQuery;
+import static com.gl.FileScpProcess.P5Process.QueryExecuter.runQuery;
 
 public class CustomImeiPairProcess {
 
     static Logger logger = LogManager.getLogger(CustomImeiPairProcess.class);
     public static void p5(Connection conn) {
-        updateNwl(conn);
         var table = "gdce_data";
+        updateNwl(conn);
         startService(conn, table);
     }
 
     public static void updateNwl(Connection conn) {
-        var q = "update app.national_whitelist set gdce_imei_status =1, gdce_modified_time =CURRENT_TIMESTAMP  where gdce_imei_status in (0,3)   and imei in( select imei from app.gdce_data where created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' )  )  ";
+        var q = "update app.national_whitelist set gdce_imei_status =1, gdce_modified_time =CURRENT_TIMESTAMP" +
+                "  where gdce_imei_status in (0,3)   and imei in( select imei from app.gdce_data where created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' )  )  ";
         runQuery(conn, q);
     }
 

@@ -14,12 +14,13 @@ public class P5Init {
             case "RegisterIMEIUpdate":
                 CustomImeiPairProcess.p5(c);
                 break;
+            case "EdrUpdateMsisdn":
+                EdrUpdateMsisdnProcess.p5(c);
+                break;
             case "LMImeiPair":
                 LMImiePairProcess.p5(c);
                 break;
-            case "CustomNwl":
-                NwlCustomFlagProcess.p5(c);
-                break;
+
             case "LMNwl":
                 NwlLMFlagProcess.p5(c);
                 break;
