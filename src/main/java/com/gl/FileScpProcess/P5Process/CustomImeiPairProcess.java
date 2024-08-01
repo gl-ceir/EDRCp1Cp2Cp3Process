@@ -5,19 +5,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 
-import static com.gl.FileScpProcess.P5Process.NwlCustomFlagProcess.runQuery;
+import static com.gl.FileScpProcess.P5Process.QueryExecuter.runQuery;
 
 public class CustomImeiPairProcess {
 
     static Logger logger = LogManager.getLogger(CustomImeiPairProcess.class);
     public static void p5(Connection conn) {
-        updateNwl(conn);
         var table = "gdce_data";
+        updateNwl(conn);
         startService(conn, table);
     }
 
     public static void updateNwl(Connection conn) {
-        var q = "update app.national_whitelist set gdce_imei_status =1, gdce_modified_time =CURRENT_TIMESTAMP  where gdce_imei_status in (0,3)   and imei in( select imei from app.gdce_data where created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' )  )  ";
+        var q = "update app.national_whitelist set gdce_imei_status =1, gdce_modified_time =CURRENT_TIMESTAMP" +
+                "  where gdce_imei_status in (0,3)   and imei in( select imei from app.gdce_data where created_on >= ( select IFNULL(value, '2000-01-01') from sys_param where tag ='gdce_register_imei_update_last_run_time' )  )  ";
         runQuery(conn, q);
     }
 
@@ -42,7 +43,7 @@ public class CustomImeiPairProcess {
     }
 
     private static void insertNwlFromGdceOnPairRecordTime(Connection conn, String getString) {
-        String a = "insert into national_whitelist(action,actual_imei,actual_operator,created_filename,created_on_date,failed_rule_date, " +
+        String a = "insert into  app.national_whitelist(action,actual_imei,actual_operator,created_filename,created_on_date,failed_rule_date, " +
                 "failed_rule_id,failed_rule_name,feature_name,foreign_rule, imei,imei_arrival_time,imsi,is_used_device_imei,mobile_operator, " +
                 "msisdn,period, raw_cdr_file_name,record_time,record_type,server_origin,source,system_type,tac,tax_paid, is_test_imei, " +
                 "updated_filename,update_imei_arrival_time,update_raw_cdr_file_name,update_source ,gdce_imei_status,gdce_modified_time) " +

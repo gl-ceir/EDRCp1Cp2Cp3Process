@@ -21,7 +21,7 @@ public class AlertService {
 
     public void raiseAnAlert(String alertCode, String alertMessage, String alertProcess, int userId, Connection conn) {
         try (Statement stmt = conn.createStatement();) {
-            String sql = "select description from cfg_feature_alert where alert_id='" + alertCode + "'";
+            String sql = "select description from app.cfg_feature_alert where alert_id='" + alertCode + "'";
             logger.info("Fetching alert message by alert id from alertDb " + sql);
             ResultSet rs = stmt.executeQuery(sql);
             String description = "";
@@ -31,7 +31,7 @@ public class AlertService {
             description = description.replaceAll("<process_name>", alertProcess)
                     .replaceAll("<e>", alertMessage);
             logger.info("alert message: " + description);
-            String sqll = "Insert into sys_generated_alert (alert_id,description,status,user_id) values('"  + alertCode + "' , '" + description + "', 0, " + userId + " ) ";
+            String sqll = "Insert into app.sys_generated_alert (alert_id,description,status,user_id) values('"  + alertCode + "' , '" + description + "', 0, " + userId + " ) ";
             logger.info("Inserting alert into running alert db" + sqll);
             stmt.executeUpdate(sqll);
         } catch (Exception e) {

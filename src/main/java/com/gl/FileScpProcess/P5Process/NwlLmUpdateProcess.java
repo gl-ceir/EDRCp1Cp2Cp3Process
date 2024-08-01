@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 
-import static com.gl.FileScpProcess.P5Process.NwlCustomFlagProcess.runQuery;
+import static com.gl.FileScpProcess.P5Process.QueryExecuter.runQuery;
 
 public class NwlLmUpdateProcess {
     static Logger log = LogManager.getLogger(NwlLmUpdateProcess.class);

@@ -1,4 +1,3 @@
-com/gl/FileScpProcess/P5Process/NwlCustomFlagProcess.class
 com/gl/FileScpProcess/Config/PropertyReader.class
 com/gl/FileScpProcess/P5Process/NwlLMFlagProcess.class
 com/gl/FileScpProcess/Config/StringDecryptorService.class
@@ -6,9 +5,11 @@ com/gl/FileScpProcess/P5Process/LMImiePairProcess.class
 com/gl/FileScpProcess/CP/CP2FileTransfer.class
 com/gl/FileScpProcess/CP/CDRFilesDeleteAud.class
 com/gl/FileScpProcess/Application.class
+com/gl/FileScpProcess/P5Process/QueryExecuter.class
 com/gl/FileScpProcess/AlertAudit/ModuleAuditTrail.class
 com/gl/FileScpProcess/Config/MySQLConnection.class
 com/gl/FileScpProcess/P5Process/NwlCustomUpdateProcess.class
+com/gl/FileScpProcess/P5Process/EdrUpdateMsisdnProcess.class
 com/gl/FileScpProcess/AlertAudit/AlertService.class
 com/gl/FileScpProcess/P5Process/P5Init.class
 com/gl/FileScpProcess/CP/CP1FileTransfer.class

@@ -1,4 +1,5 @@
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/NwlLMFlagProcess.java
+/home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/EdrUpdateMsisdnProcess.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/CP/CDRFilesDeleteAud.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/AlertAudit/AlertService.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/P5Init.java
@@ -7,7 +8,6 @@
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/NwlLmUpdateProcess.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/Application.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/CustomImeiPairProcess.java
-/home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/NwlCustomFlagProcess.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/CP/CP1FileTransfer.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/NwlCustomUpdateProcess.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/AlertAudit/ModuleAuditTrail.java
@@ -15,4 +15,5 @@
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/CP/CP3FileTransfer.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/Config/PropertyReader.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/Config/MySQLConnection.java
+/home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/P5Process/QueryExecuter.java
 /home/sachin/WorkSpace/Glocks/projects/EDRCp1Cp2Cp3Process/src/main/java/com/gl/FileScpProcess/Config/StringDecryptorService.java
